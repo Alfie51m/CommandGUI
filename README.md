@@ -21,6 +21,9 @@ Opens the Command GUI for the player.
 ### `/cgbook`
 Gives the player a Knowledge Book that opens the Command GUI when used.
 
+### `/cggive [Player]`
+Gives specified player the Command GUI Knowledge Book.
+
 ### `/cgreload`
 Reloads the plugin's configuration.
 
@@ -31,6 +34,7 @@ Reloads the plugin's configuration.
 |--------------------------|---------------------------------------|---------|
 | `commandgui.use`         | Allows player to open the GUI.        | OP      |
 | `commandgui.book`        | Gives player book to open the GUI.    | OP      |
+| `commandgui.give`        | Gives another player the GUI Book.    | OP      |
 | `commandgui.reload`      | Allows reloading the plugin config.   | OP      |
 
 ---
