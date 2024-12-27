@@ -141,7 +141,7 @@ public class CommandGui extends JavaPlugin implements Listener {
     public void openCommandGUI(Player player) {
         int inventorySize = ((guiItems.size() - 1) / 9 + 1) * 9;
 
-        Inventory gui = Bukkit.createInventory(null, inventorySize, ChatColor.BLUE + "Command GUI");
+        Inventory gui = Bukkit.createInventory(null, inventorySize, ChatColor.GREEN + "Command GUI");
 
         for (Map.Entry<Integer, GUIItem> entry : guiItems.entrySet()) {
             int slot = entry.getKey();
