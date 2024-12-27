@@ -1,0 +1,11 @@
+name: CommandGUI
+version: '1.0'
+main: com.alfie51m.commandgui.CommandGui
+api-version: '1.21'
+commands:
+  commandgui:
+    description: Opens the command GUI.
+  cgreload:
+    description: Reloads the CommandGUI configuration.
+  cgbook:
+    description: Gives a book to open Command GUI.

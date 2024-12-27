@@ -1,0 +1,9 @@
+gui-items:
+  - slot: 0
+    name: "&aGo to Spawn"
+    command: "spawn"
+    material: "COMPASS"
+  - slot: 1
+    name: "&cHeal"
+    command: "heal"
+    material: "GOLDEN_APPLE"
