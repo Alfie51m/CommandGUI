@@ -45,8 +45,13 @@ public class CommandGui extends JavaPlugin implements Listener {
         if (label.equalsIgnoreCase("commandgui")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                openCommandGUI(player);
-                return true;
+                if (player.hasPermission("commandgui.use")) {
+                    openCommandGUI(player);
+                    return true;
+                } else {
+                    sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                    return true;
+                }
             } else {
                 sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                 return true;
@@ -67,9 +72,14 @@ public class CommandGui extends JavaPlugin implements Listener {
         if (label.equalsIgnoreCase("cgbook")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                giveCustomKnowledgeBook(player);
-                sender.sendMessage(ChatColor.GREEN + "Knowledge Book given!");
-                return true;
+                if (player.hasPermission("commandgui.book")) {
+                    giveCustomKnowledgeBook(player);
+                    sender.sendMessage(ChatColor.GREEN + "Knowledge Book given!");
+                    return true;
+                } else {
+                    sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                    return true;
+                }
             } else {
                 sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                 return true;

@@ -4,8 +4,22 @@ main: com.alfie51m.commandgui.CommandGui
 api-version: '1.21'
 commands:
   commandgui:
-    description: Opens the command GUI.
+    description: Opens the Command GUI.
+    permission: commandgui.commandgui
   cgreload:
     description: Reloads the CommandGUI configuration.
+    permission: commandgui.reload
   cgbook:
-    description: Gives a book to open Command GUI.
+    description: Gives the player a book to open the Command GUI.
+    permission: commandgui.cgbook
+
+permissions:
+  commandgui.commandgui:
+    description: Allows access to the /commandgui command.
+    default: op
+  commandgui.reload:
+    description: Allows access to the /cgreload command.
+    default: op
+  commandgui.cgbook:
+    description: Allows access to the /cgbook command.
+    default: op
