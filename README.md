@@ -84,7 +84,7 @@ Contributions are welcome! Please fork the repository, make your changes, and su
 ---
 
 ## **License**
-This plugin is licensed under the [Apache License 2.0]([https://opensource.org/licenses/MIT](https://www.apache.org/licenses/LICENSE-2.0)).
+This plugin is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 --- 
 
