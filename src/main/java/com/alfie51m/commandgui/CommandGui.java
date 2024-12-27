@@ -53,7 +53,7 @@ public class CommandGui extends JavaPlugin implements Listener {
                     return true;
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+                sender.sendMessage(ChatColor.RED + "[CommandGUI] Only players can use this command!");
                 return true;
             }
         }
@@ -62,7 +62,7 @@ public class CommandGui extends JavaPlugin implements Listener {
             if (sender.hasPermission("commandgui.reload")) {
                 reloadConfig();
                 loadGUIItems();
-                sender.sendMessage(ChatColor.GREEN + "CommandGUI configuration reloaded!");
+                sender.sendMessage(ChatColor.GREEN + "[CommandGUI] configuration reloaded!");
             } else {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
             }
@@ -74,14 +74,43 @@ public class CommandGui extends JavaPlugin implements Listener {
                 Player player = (Player) sender;
                 if (player.hasPermission("commandgui.book")) {
                     giveCustomKnowledgeBook(player);
-                    sender.sendMessage(ChatColor.GREEN + "Knowledge Book given!");
+                    sender.sendMessage(ChatColor.GREEN + "[CommandGUI] Book given!");
                     return true;
                 } else {
                     sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
                     return true;
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+                sender.sendMessage(ChatColor.RED + "[CommandGUI] Only players can use this command!");
+                return true;
+            }
+        }
+
+        if (label.equalsIgnoreCase("cggive")) {
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                if (player.hasPermission("commandgui.cggive")) {
+                    if (args.length == 1) {
+                        // Target player specified
+                        Player targetPlayer = Bukkit.getPlayerExact(args[0]);
+
+                        if (targetPlayer != null) {
+                            giveCustomKnowledgeBook(targetPlayer);
+                            sender.sendMessage(ChatColor.GREEN + "[CommandGUI] Knowledge Book given to " + targetPlayer.getName() + "!");
+                            targetPlayer.sendMessage(ChatColor.GREEN + "[CommandGUI] You have received a Knowledge Book!");
+                        } else {
+                            sender.sendMessage(ChatColor.RED + "[CommandGUI] Player " + args[0] + " not found!");
+                        }
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "[CommandGUI] Invalid usage! Usage: /cggive <player>");
+                    }
+                    return true;
+                } else {
+                    sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                    return true;
+                }
+            } else {
+                sender.sendMessage(ChatColor.RED + "[CommandGUI] Only players can use this command!");
                 return true;
             }
         }

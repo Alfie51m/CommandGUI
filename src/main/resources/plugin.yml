@@ -5,21 +5,23 @@ api-version: '1.21'
 commands:
   commandgui:
     description: Opens the Command GUI.
-    permission: commandgui.commandgui
   cgreload:
     description: Reloads the CommandGUI configuration.
-    permission: commandgui.reload
   cgbook:
     description: Gives the player a book to open the Command GUI.
-    permission: commandgui.cgbook
-
+  cggive:
+    description: Gives the custom Knowledge Book to another player.
+    usage: /cggive <player>
 permissions:
-  commandgui.commandgui:
+  commandgui.use:
     description: Allows access to the /commandgui command.
     default: op
   commandgui.reload:
     description: Allows access to the /cgreload command.
     default: op
-  commandgui.cgbook:
+  commandgui.book:
     description: Allows access to the /cgbook command.
+    default: op
+  commandgui.cggive:
+    description: Allows access to the /cggive command and to give the Knowledge Book to other players.
     default: op
