@@ -3,7 +3,14 @@ gui-items:
     name: "&aGo to Spawn"
     command: "spawn"
     material: "COMPASS"
+    run-as-player: true
   - slot: 1
     name: "&cHeal"
     command: "heal"
     material: "GOLDEN_APPLE"
+    run-as-player: true
+  - slot: 2
+    name: "&bDiamonds"
+    command: "give %player% diamond 1"
+    material: "DIAMOND"
+    run-as-player: false

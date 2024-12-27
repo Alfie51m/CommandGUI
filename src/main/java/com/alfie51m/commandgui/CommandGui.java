@@ -244,4 +244,3 @@ public class CommandGui extends JavaPlugin implements Listener {
         }
     }
 }
-
