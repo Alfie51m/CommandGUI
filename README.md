@@ -93,3 +93,4 @@ This plugin is licensed under the [Apache License 2.0](https://www.apache.org/li
 --- 
 
 ### **Thanks for using CommandGUI**
+You can also find this plugin on [Modrinth](https://modrinth.com/plugin/commandgui-spigot), [Paper Hangar](https://hangar.papermc.io/Alfie51m/CommandGUI), [SpigotMC](https://www.spigotmc.org/resources/commandgui.121547/)
