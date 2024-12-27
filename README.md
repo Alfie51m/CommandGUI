@@ -1,7 +1,7 @@
 # **CommandGUI Plugin**
 
 ## **Overview**
-CommandGUI is a Minecraft Bukkit plugin that provides players with a custom GUI to execute commands. The GUI is fully configurable, allowing you to define items, commands, and layout. Players can also receive a Knowledge Book that opens the GUI when used.
+CommandGUI is a Minecraft Bukkit plugin that provides players with a custom GUI to execute commands as the player interacting with the GUI. The GUI is fully configurable, allowing you to define items, commands, and layout. Players can also receive a Knowledge Book that opens the GUI when used.
 
 ---
 
@@ -21,6 +21,9 @@ Opens the Command GUI for the player.
 ### `/cgbook`
 Gives the player a Knowledge Book that opens the Command GUI when used.
 
+### `/cggive [Player]`
+Gives specified player the Command GUI Knowledge Book.
+
 ### `/cgreload`
 Reloads the plugin's configuration.
 
@@ -31,6 +34,7 @@ Reloads the plugin's configuration.
 |--------------------------|---------------------------------------|---------|
 | `commandgui.use`         | Allows player to open the GUI.        | OP      |
 | `commandgui.book`        | Gives player book to open the GUI.    | OP      |
+| `commandgui.give`        | Gives another player the GUI Book.    | OP      |
 | `commandgui.reload`      | Allows reloading the plugin config.   | OP      |
 
 ---
