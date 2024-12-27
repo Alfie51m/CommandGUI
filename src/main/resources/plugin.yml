@@ -12,14 +12,3 @@ commands:
   cgbook:
     description: Gives the player a book to open the Command GUI.
     permission: commandgui.cgbook
-
-permissions:
-  commandgui.commandgui:
-    description: Allows access to the /commandgui command.
-    default: op
-  commandgui.reload:
-    description: Allows access to the /cgreload command.
-    default: op
-  commandgui.cgbook:
-    description: Allows access to the /cgbook command.
-    default: op

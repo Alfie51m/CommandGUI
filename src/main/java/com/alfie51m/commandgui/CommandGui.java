@@ -74,7 +74,7 @@ public class CommandGui extends JavaPlugin implements Listener {
                 Player player = (Player) sender;
                 if (player.hasPermission("commandgui.book")) {
                     giveCustomKnowledgeBook(player);
-                    sender.sendMessage(ChatColor.GREEN + "Knowledge Book given!");
+                    sender.sendMessage(ChatColor.BLUE + "Command GUI Book given!");
                     return true;
                 } else {
                     sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
