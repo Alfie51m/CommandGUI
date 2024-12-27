@@ -91,7 +91,6 @@ public class CommandGui extends JavaPlugin implements Listener {
                 Player player = (Player) sender;
                 if (player.hasPermission("commandgui.cggive")) {
                     if (args.length == 1) {
-                        // Target player specified
                         Player targetPlayer = Bukkit.getPlayerExact(args[0]);
 
                         if (targetPlayer != null) {
@@ -127,11 +126,12 @@ public class CommandGui extends JavaPlugin implements Listener {
             String name = (String) itemConfig.get("name");
             String command = (String) itemConfig.get("command");
             String materialName = (String) itemConfig.get("material");
+            boolean runAsPlayer = itemConfig.containsKey("run-as-player") && (boolean) itemConfig.get("run-as-player");
 
             Material material = Material.matchMaterial(materialName);
             if (material != null) {
                 int slot = itemConfig.containsKey("slot") ? (int) itemConfig.get("slot") : currentSlot++;
-                guiItems.put(slot, new GUIItem(name, command, material));
+                guiItems.put(slot, new GUIItem(name, command, material, runAsPlayer));
             } else {
                 getLogger().warning("Invalid material '" + materialName + "' for item: " + name);
             }
@@ -164,7 +164,7 @@ public class CommandGui extends JavaPlugin implements Listener {
         ItemMeta meta = knowledgeBook.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName(ChatColor.AQUA + "Command GUI Book");
+            meta.setDisplayName(ChatColor.GREEN + "CommandGUI Book");
             meta.setLore(List.of(ChatColor.GRAY + "Right-click to open the Command GUI."));
             knowledgeBook.setItemMeta(meta);
         }
@@ -174,7 +174,7 @@ public class CommandGui extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getView().getTitle().equals(ChatColor.BLUE + "Command GUI")) {
+        if (event.getView().getTitle().equals(ChatColor.GREEN + "Command GUI")) {
             event.setCancelled(true);
 
             Player player = (Player) event.getWhoClicked();
@@ -189,7 +189,13 @@ public class CommandGui extends JavaPlugin implements Listener {
 
             if (guiItem != null) {
                 player.closeInventory();
-                player.performCommand(guiItem.getCommand());
+
+                String commandToExecute = guiItem.getCommand().replace("%player%", player.getName());
+                if (guiItem.isRunAsPlayer()) {
+                    player.performCommand(commandToExecute);
+                } else {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandToExecute);
+                }
             }
         }
     }
@@ -212,11 +218,13 @@ public class CommandGui extends JavaPlugin implements Listener {
         private final String name;
         private final String command;
         private final Material material;
+        private final boolean runAsPlayer;
 
-        public GUIItem(String name, String command, Material material) {
+        public GUIItem(String name, String command, Material material, boolean runAsPlayer) {
             this.name = name;
             this.command = command;
             this.material = material;
+            this.runAsPlayer = runAsPlayer;
         }
 
         public String getName() {
@@ -230,5 +238,10 @@ public class CommandGui extends JavaPlugin implements Listener {
         public Material getMaterial() {
             return material;
         }
+
+        public boolean isRunAsPlayer() {
+            return runAsPlayer;
+        }
     }
 }
+
