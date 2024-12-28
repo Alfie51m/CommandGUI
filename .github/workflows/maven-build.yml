@@ -56,11 +56,12 @@ jobs:
       - name: Validate Commit Message
         run: |
           echo "Validating commit message..."
-          if [[ ! "${{ github.event.head_commit.message }}" =~ ^Update\ v[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          if [[ ! "$COMMIT_MESSAGE" =~ ^Update\ v[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
             echo "Invalid commit message format. Expected 'Update vX.X.X'."
             exit 1
           fi
-          echo "Commit message validated."
+          echo "Commit message validated: $COMMIT_MESSAGE."
 
       - name: Upload to Modrinth
         run: |
