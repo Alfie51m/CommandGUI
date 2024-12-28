@@ -19,6 +19,7 @@ import java.util.Map;
 public class CommandGuiGUI implements Listener {
 
     private static final Map<Integer, GUIItem> guiItems = new HashMap<>();
+    private static final Map<Player, Map<Integer, Long>> cooldowns = new HashMap<>();
 
     public static void loadGUIItems() {
         guiItems.clear();
@@ -31,9 +32,17 @@ public class CommandGuiGUI implements Listener {
             boolean runAsPlayer = itemConfig.containsKey("run-as-player") && (boolean) itemConfig.get("run-as-player");
 
             Material material = Material.matchMaterial(materialName);
+
+            List<?> rawLore = (List<?>) itemConfig.get("lore");
+            List<String> lore = rawLore != null
+                    ? rawLore.stream().map(Object::toString).toList()
+                    : List.of();
+
+            int cooldown = itemConfig.containsKey("cooldown") ? (int) itemConfig.get("cooldown") : 0;
+
             if (material != null) {
                 int slot = itemConfig.containsKey("slot") ? (int) itemConfig.get("slot") : guiItems.size();
-                guiItems.put(slot, new GUIItem(name, command, material, runAsPlayer));
+                guiItems.put(slot, new GUIItem(name, command, material, runAsPlayer, lore, cooldown));
                 CommandGui.getInstance().getLogger().info("Loaded GUI item: " + name + " at slot " + slot);
             } else {
                 CommandGui.getInstance().getLogger().warning("Invalid material '" + materialName + "' for item: " + name);
@@ -54,6 +63,10 @@ public class CommandGuiGUI implements Listener {
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', guiItem.getName()));
+                List<String> lore = guiItem.getLore().stream()
+                        .map(line -> ChatColor.translateAlternateColorCodes('&', line))
+                        .toList();
+                meta.setLore(lore);
                 itemStack.setItemMeta(meta);
             }
             gui.setItem(slot, itemStack);
@@ -91,6 +104,24 @@ public class CommandGuiGUI implements Listener {
             GUIItem guiItem = guiItems.get(slot);
 
             if (guiItem != null) {
+                // Handle cooldown
+                long currentTime = System.currentTimeMillis();
+                cooldowns.putIfAbsent(player, new HashMap<>());
+                long lastUsed = cooldowns.get(player).getOrDefault(slot, 0L);
+                int cooldown = guiItem.getCooldown();
+
+                if (currentTime - lastUsed < cooldown * 1000L) {
+                    long timeLeft = (cooldown * 1000L - (currentTime - lastUsed)) / 1000L;
+                    String cooldownMessage = CommandGui.getInstance()
+                            .getMessage("cooldown_active")
+                            .replace("%time%", String.valueOf(timeLeft));
+                    player.sendMessage(ChatColor.RED + cooldownMessage);
+                    return;
+                }
+
+                // Update cooldown
+                cooldowns.get(player).put(slot, currentTime);
+
                 player.closeInventory();
 
                 String commandToExecute = guiItem.getCommand().replace("%player%", player.getName());
