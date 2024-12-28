@@ -23,15 +23,16 @@ public class CommandGui extends JavaPlugin {
         saveDefaultConfig();
         loadLanguageFile();
 
-        // Load GUI items
-        CommandGuiGUI.loadGUIItems();
-
-        // Register events and commands
+        // Register event listeners
         Bukkit.getPluginManager().registerEvents(new CommandGuiGUI(), this);
-        getCommand("commandgui").setExecutor(new CommandGuiCommands());
-        getCommand("cgreload").setExecutor(new CommandGuiCommands());
-        getCommand("cgbook").setExecutor(new CommandGuiCommands());
-        getCommand("cggive").setExecutor(new CommandGuiCommands());
+
+        // Register commands and tab completers
+        CommandGuiCommands commandExecutor = new CommandGuiCommands();
+        getCommand("commandgui").setExecutor(commandExecutor);
+        getCommand("commandgui").setTabCompleter(commandExecutor);
+
+        // Load GUI items on startup
+        CommandGuiGUI.loadGUIItems();
 
         getLogger().info("CommandGUI Plugin has been enabled.");
     }
@@ -54,3 +55,4 @@ public class CommandGui extends JavaPlugin {
         return langConfig.getString("messages." + key, key).replace('&', '§');
     }
 }
+

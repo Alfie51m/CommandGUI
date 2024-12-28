@@ -4,24 +4,19 @@ main: com.alfie51m.commandgui.CommandGui
 api-version: '1.21'
 commands:
   commandgui:
-    description: Opens the Command GUI.
-  cgreload:
-    description: Reloads the CommandGUI configuration.
-  cgbook:
-    description: Gives the player a book to open the Command GUI.
-  cggive:
-    description: Gives the custom Knowledge Book to another player.
-    usage: /cggive <player>
+    description: Main command for the CommandGUI plugin.
+    aliases: [cg]
+    usage: "/commandgui [book|give <player>|reload]"
 permissions:
   commandgui.use:
-    description: Allows access to the /commandgui command.
-    default: op
-  commandgui.reload:
-    description: Allows access to the /cgreload command.
+    description: Allows access to the /commandgui command and GUI.
     default: op
   commandgui.book:
-    description: Allows access to the /cgbook command.
+    description: Allows access to /commandgui book to get a CommandGUI Book.
     default: op
   commandgui.give:
-    description: Allows access to the /cggive command and to give the Knowledge Book to other players.
+    description: Allows access to /commandgui give <player> to give the CommandGUI Book to another player.
+    default: op
+  commandgui.reload:
+    description: Allows access to /commandgui reload to reload the configuration.
     default: op

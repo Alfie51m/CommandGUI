@@ -1,6 +1,7 @@
 # General settings
-verbose-mode: false # Set to true to enable verbose messages
 language-file: "en_us.yml"  # Default language file
+verbose-mode: false # Set to true to enable verbose messages
+gui-size-mode: "dynamic" # Options: "dynamic", "fixed"
 
 gui-items:
   - slot: 0
