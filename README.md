@@ -34,12 +34,13 @@ CommandGUI is a Minecraft Bukkit plugin that provides players with a custom GUI 
 ---
 
 ## **Permissions**
-| Permission              | Description                           | Default |
-|--------------------------|---------------------------------------|---------|
-| `commandgui.use`         | Allows player to open the GUI.        | OP      |
-| `commandgui.book`        | Gives player book to open the GUI.    | OP      |
-| `commandgui.cggive`      | Gives another player the GUI Book.    | OP      |
-| `commandgui.reload`      | Allows reloading the plugin config.   | OP      |
+| Permission          | Description                         | Default |
+|---------------------|-------------------------------------|---------|
+| `commandgui.use`    | Allows player to open the GUI.      | OP      |
+| `commandgui.bypass` | Allows player to bypass cooldowns.  | OP      |
+| `commandgui.book`   | Gives player book to open the GUI.  | OP      |
+| `commandgui.cggive` | Gives another player the GUI Book.  | OP      |
+| `commandgui.reload` | Allows reloading the plugin config. | OP      |
 
 ---
 
@@ -58,7 +59,7 @@ The `config.yml` file allows you to customize the items in the GUI.
 ```yaml
 # General settings
 language-file: "en_us.yml"  # Default language file
-verbose-mode: false # Set to true to enable verbose messages
+verbose-mode: false # Set to true to enable verbose messages globally for all items (default fallback)
 gui-size-mode: "dynamic" # Options: "dynamic", "fixed"
 
 gui-items:
@@ -68,33 +69,52 @@ gui-items:
      item: "COMPASS"
      run-as-player: true
      cooldown: 0 # No cooldown
+     verbose: true # Always log interaction for this item
      lore:
         - "&7Click to teleport to spawn"
+
    - slot: 1
      name: "&cHeal"
      command: "heal"
      item: "GOLDEN_APPLE"
      run-as-player: true
      cooldown: 30 # 30 seconds cooldown
+     verbose: false # Never log interaction for this item
      lore:
         - "&7Click to heal yourself"
+
    - slot: 2
      name: "&bDiamonds"
      command: "give %player% diamond 1"
      item: "DIAMOND"
      run-as-player: false
      cooldown: 60 # 60 seconds cooldown
+      # No verbose field; falls back to global verbose-mode
      lore:
         - "&7Receive a diamond!"
         - "&7This is a server reward."
-
 ```
 
 ### Configuration Options
-- **`name`**: The display name of the item in the GUI.
-- **`command`**: The command executed when the item is clicked.
-- **`item`**: The item's material (e.g., `DIAMOND`, `BED`).
+
+#### General Settings
+- **`language-file`**: The language file to use (default: `en_us.yml`).
+- **`verbose-mode`**: If `true`, displays verbose messages for item interactions globally (default: `false`).
+- **`gui-size-mode`**: Determines the size of the GUI. Options:
+   - `"dynamic"`: Adjusts the inventory size based on the number of items.
+   - `"fixed"`: Sets the GUI size to a fixed double chest (54 slots).
+
+#### GUI Items
+Each item in the GUI has the following options:
+
+- **`name`**: The display name of the item in the GUI, with color codes supported (e.g., `&aGo to Spawn`).
+- **`command`**: The command executed when the item is clicked (e.g., `spawn` or `give %player% diamond 1`).
+- **`item`**: The item's material (e.g., `DIAMOND`, `GOLDEN_APPLE`, `COMPASS`).
 - **`slot`**: The inventory slot for the item (optional, auto-increment if not provided).
+- **`lore`**: A list of text lines displayed as the item's lore (optional, supports color codes).
+- **`run-as-player`**: If `true`, the command will run as the player. If `false`, the command will run as the console (default: `false`).
+- **`cooldown`**: The cooldown in seconds before the item can be used again (default: `0` for no cooldown).
+- **`verbose`**: If `true`, overrides the global `verbose-mode` and enables verbose logging for this item (optional).
 
 ---
 

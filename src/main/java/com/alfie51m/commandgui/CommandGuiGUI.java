@@ -19,7 +19,7 @@ import java.util.Map;
 public class CommandGuiGUI implements Listener {
 
     private static final Map<Integer, GUIItem> guiItems = new HashMap<>();
-    private static final Map<Player, Map<Integer, Long>> cooldowns = new HashMap<>(); // Added cooldown tracking
+    private static final Map<Player, Map<Integer, Long>> cooldowns = new HashMap<>();
     private static final int INVENTORY_SIZE_FIXED = 54; // Fixed size (Double chest)
 
     public static void loadGUIItems() {
@@ -108,19 +108,21 @@ public class CommandGuiGUI implements Listener {
             GUIItem guiItem = guiItems.get(slot);
 
             // Handle cooldown
-            long currentTime = System.currentTimeMillis();
-            cooldowns.putIfAbsent(player, new HashMap<>());
-            long lastUsed = cooldowns.get(player).getOrDefault(slot, 0L);
-            int cooldown = guiItem.getCooldown();
+            if (!player.hasPermission("commandgui.bypass")) { // Bypass cooldown if the player has permission
+                long currentTime = System.currentTimeMillis();
+                cooldowns.putIfAbsent(player, new HashMap<>());
+                long lastUsed = cooldowns.get(player).getOrDefault(slot, 0L);
+                int cooldown = guiItem.getCooldown();
 
-            if (currentTime - lastUsed < cooldown * 1000L) {
-                long timeLeft = (cooldown * 1000L - (currentTime - lastUsed)) / 1000L;
-                player.sendMessage(ChatColor.RED + CommandGui.getInstance().getMessage("cooldown_active").replace("%time%", String.valueOf(timeLeft)));
-                return;
+                if (currentTime - lastUsed < cooldown * 1000L) {
+                    long timeLeft = (cooldown * 1000L - (currentTime - lastUsed)) / 1000L;
+                    player.sendMessage(ChatColor.RED + CommandGui.getInstance().getMessage("cooldown_active").replace("%time%", String.valueOf(timeLeft)));
+                    return;
+                }
+
+                // Update cooldown
+                cooldowns.get(player).put(slot, currentTime);
             }
-
-            // Update cooldown
-            cooldowns.get(player).put(slot, currentTime);
 
             // Handle verbose messaging
             Boolean itemVerbose = guiItem.getVerbose();
