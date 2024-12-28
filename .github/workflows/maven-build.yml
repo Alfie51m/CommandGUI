@@ -1,17 +1,9 @@
-name: Maven Build and Release
+name: Maven Build and Capture Artifacts
 
-on:
-  push:
-    branches-ignore:
-      - '*-ignore'  # Ignore branches with '-ignore' in their names
-  pull_request:
-    branches-ignore:
-      - '*-ignore'  # Ignore pull requests with '-ignore' in branch names
-  workflow_dispatch:  # Allow manual triggering of the workflow
+on: [push, workflow_dispatch]
 
 jobs:
   build:
-    if: ${{ !contains(github.event.head_commit.message, '-ignore') }}
     runs-on: ubuntu-latest
 
     steps:
@@ -40,54 +32,3 @@ jobs:
         with:
           name: java-build-artifacts
           path: target/*.jar
-
-  release:
-    if: >
-      ${{ github.event_name == 'push' &&
-      startsWith(github.event.head_commit.message, 'Update v') &&
-      !contains(github.event.head_commit.message, '-ignore') }}
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Validate Commit Message
-        run: |
-          echo "Validating commit message..."
-          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          if [[ ! "$COMMIT_MESSAGE" =~ ^Update\ v[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
-            echo "Invalid commit message format. Expected 'Update vX.X.X'."
-            exit 1
-          fi
-          echo "Commit message validated: $COMMIT_MESSAGE."
-
-      - name: Upload to Modrinth
-        run: |
-          curl -X POST https://api.modrinth.com/v2/project/YOUR_PROJECT_ID/version \
-          -H "Authorization: Bearer ${{ secrets.MODRINTH_TOKEN }}" \
-          -H "Content-Type: application/json" \
-          -d '{
-            "name": "Update v${{ github.event.head_commit.message }}",
-            "version_number": "${{ github.event.head_commit.message }}",
-            "version_type": "release",
-            "files": ["target/*.jar"],
-            "changelog": "Your changelog here",
-            "dependencies": []
-          }'
-
-      - name: Upload to SpigotMC
-        run: |
-          curl -X POST https://api.spigotmc.org/your-upload-endpoint \
-          -H "Authorization: Bearer ${{ secrets.SPIGOTMC_TOKEN }}" \
-          -F "file=@target/*.jar" \
-          -F "changelog=Your changelog here"
-
-      - name: Upload to Paper Hangar
-        run: |
-          curl -X POST https://api.papermc.io/hangar/projects/YOUR_PROJECT_NAME/versions \
-          -H "Authorization: Bearer ${{ secrets.HANGAR_TOKEN }}" \
-          -F "version=Update v${{ github.event.head_commit.message }}" \
-          -F "changelog=Your changelog here" \
-          -F "jar=@target/*.jar"
