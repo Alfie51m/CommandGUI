@@ -1,3 +1,5 @@
+language-file: "en_us.yml"  # Default language file
+
 gui-items:
   - slot: 0
     name: "&aGo to Spawn"
