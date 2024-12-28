@@ -45,6 +45,7 @@ jobs:
     if: >
       ${{ github.event_name == 'push' &&
       startsWith(github.event.head_commit.message, 'Update v') &&
+      github.event.head_commit.message matches '^Update v[0-9]+\\.[0-9]+(\\.[0-9]+)?$' &&
       !contains(github.event.head_commit.message, '-ignore') }}
     needs: build
     runs-on: ubuntu-latest
