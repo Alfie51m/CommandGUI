@@ -43,7 +43,7 @@ CommandGUI is a Minecraft Bukkit plugin that provides players with a custom GUI 
 | `commandgui.use`    | Allows player to open the GUI.      | OP      |
 | `commandgui.bypass` | Allows player to bypass cooldowns.  | OP      |
 | `commandgui.book`   | Gives player book to open the GUI.  | OP      |
-| `commandgui.cggive` | Gives another player the GUI Book.  | OP      |
+| `commandgui.give`   | Gives another player the GUI Book.  | OP      |
 | `commandgui.reload` | Allows reloading the plugin config. | OP      |
 
 ---
