@@ -34,7 +34,7 @@ Reloads the plugin's configuration.
 |--------------------------|---------------------------------------|---------|
 | `commandgui.use`         | Allows player to open the GUI.        | OP      |
 | `commandgui.book`        | Gives player book to open the GUI.    | OP      |
-| `commandgui.give`        | Gives another player the GUI Book.    | OP      |
+| `commandgui.cggive`      | Gives another player the GUI Book.    | OP      |
 | `commandgui.reload`      | Allows reloading the plugin config.   | OP      |
 
 ---
