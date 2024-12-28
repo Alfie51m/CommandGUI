@@ -6,7 +6,7 @@
 
     <groupId>com.alfie51m</groupId>
     <artifactId>CommandGUI</artifactId>
-    <version>3.0-SNAPSHOT</version>
+    <version>3.0</version>
     <packaging>jar</packaging>
 
     <name>CommandGUI</name>
