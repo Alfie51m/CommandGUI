@@ -20,7 +20,7 @@ public class CommandGuiGUI implements Listener {
 
     private static final Map<Integer, GUIItem> guiItems = new HashMap<>();
     private static final Map<Player, Map<Integer, Long>> cooldowns = new HashMap<>();
-    private static final int INVENTORY_SIZE_FIXED = 54; // Fixed size (Double chest)
+    private static final int INVENTORY_SIZE_FIXED = 54;
 
     public static void loadGUIItems() {
         guiItems.clear();
@@ -54,19 +54,10 @@ public class CommandGuiGUI implements Listener {
 
     public static void openCommandGUI(Player player) {
         String sizeMode = CommandGui.getInstance().getConfig().getString("gui-size-mode", "dynamic").toLowerCase();
-        int inventorySize;
-
-        if (sizeMode.equals("fixed")) {
-            inventorySize = INVENTORY_SIZE_FIXED;
-        } else {
-            // Dynamic size: calculate based on the number of items
-            int maxSlot = guiItems.keySet().stream().max(Integer::compareTo).orElse(0);
-            inventorySize = ((maxSlot / 9) + 1) * 9; // Round up to the nearest multiple of 9
-        }
+        int inventorySize = sizeMode.equals("fixed") ? INVENTORY_SIZE_FIXED : ((guiItems.size() / 9) + 1) * 9;
 
         Inventory gui = Bukkit.createInventory(null, inventorySize, ChatColor.translateAlternateColorCodes('&', CommandGui.getInstance().getMessage("gui_title")));
 
-        // Populate GUI items
         for (Map.Entry<Integer, GUIItem> entry : guiItems.entrySet()) {
             int slot = entry.getKey();
             GUIItem guiItem = entry.getValue();
@@ -89,8 +80,7 @@ public class CommandGuiGUI implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        String title = event.getView().getTitle();
-        if (!title.equals(ChatColor.translateAlternateColorCodes('&', CommandGui.getInstance().getMessage("gui_title")))) {
+        if (!event.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', CommandGui.getInstance().getMessage("gui_title")))) {
             return;
         }
 
@@ -107,8 +97,7 @@ public class CommandGuiGUI implements Listener {
         if (guiItems.containsKey(slot)) {
             GUIItem guiItem = guiItems.get(slot);
 
-            // Handle cooldown
-            if (!player.hasPermission("commandgui.bypass")) { // Bypass cooldown if the player has permission
+            if (!player.hasPermission("commandgui.bypass")) {
                 long currentTime = System.currentTimeMillis();
                 cooldowns.putIfAbsent(player, new HashMap<>());
                 long lastUsed = cooldowns.get(player).getOrDefault(slot, 0L);
@@ -120,11 +109,9 @@ public class CommandGuiGUI implements Listener {
                     return;
                 }
 
-                // Update cooldown
                 cooldowns.get(player).put(slot, currentTime);
             }
 
-            // Handle verbose messaging
             Boolean itemVerbose = guiItem.getVerbose();
             boolean globalVerbose = CommandGui.getInstance().getConfig().getBoolean("verbose-mode", false);
 
