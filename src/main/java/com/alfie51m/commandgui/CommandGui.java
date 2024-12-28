@@ -5,7 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,15 +25,14 @@ import java.util.Map;
 public class CommandGui extends JavaPlugin implements Listener {
 
     private final Map<Integer, GUIItem> guiItems = new HashMap<>();
+    private FileConfiguration langConfig;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
-
+        loadLanguageFile();  // Load the language file based on config
         loadGUIItems();
-
         Bukkit.getPluginManager().registerEvents(this, this);
-
         getLogger().info("CommandGUI Plugin has been enabled.");
     }
 
@@ -47,24 +48,23 @@ public class CommandGui extends JavaPlugin implements Listener {
                 Player player = (Player) sender;
                 if (player.hasPermission("commandgui.use")) {
                     openCommandGUI(player);
-                    return true;
                 } else {
-                    sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
-                    return true;
+                    sender.sendMessage(ChatColor.RED + getMessage("no_permission"));
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "[CommandGUI] Only players can use this command!");
-                return true;
+                sender.sendMessage(ChatColor.RED + getMessage("only_players"));
             }
+            return true;
         }
 
         if (label.equalsIgnoreCase("cgreload")) {
             if (sender.hasPermission("commandgui.reload")) {
                 reloadConfig();
                 loadGUIItems();
-                sender.sendMessage(ChatColor.GREEN + "[CommandGUI] configuration reloaded!");
+                loadLanguageFile();  // Reload the language file after config reload
+                sender.sendMessage(ChatColor.GREEN + getMessage("reload_success"));
             } else {
-                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                sender.sendMessage(ChatColor.RED + getMessage("no_permission"));
             }
             return true;
         }
@@ -74,16 +74,14 @@ public class CommandGui extends JavaPlugin implements Listener {
                 Player player = (Player) sender;
                 if (player.hasPermission("commandgui.book")) {
                     giveCustomKnowledgeBook(player);
-                    sender.sendMessage(ChatColor.GREEN + "[CommandGUI] Book given!");
-                    return true;
+                    sender.sendMessage(ChatColor.GREEN + getMessage("book_received"));
                 } else {
-                    sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
-                    return true;
+                    sender.sendMessage(ChatColor.RED + getMessage("no_permission"));
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "[CommandGUI] Only players can use this command!");
-                return true;
+                sender.sendMessage(ChatColor.RED + getMessage("only_players"));
             }
+            return true;
         }
 
         if (label.equalsIgnoreCase("cggive")) {
@@ -91,31 +89,42 @@ public class CommandGui extends JavaPlugin implements Listener {
                 Player player = (Player) sender;
                 if (player.hasPermission("commandgui.cggive")) {
                     if (args.length == 1) {
-                        // Target player specified
                         Player targetPlayer = Bukkit.getPlayerExact(args[0]);
 
                         if (targetPlayer != null) {
                             giveCustomKnowledgeBook(targetPlayer);
-                            sender.sendMessage(ChatColor.GREEN + "[CommandGUI] Knowledge Book given to " + targetPlayer.getName() + "!");
-                            targetPlayer.sendMessage(ChatColor.GREEN + "[CommandGUI] You have received a Knowledge Book!");
+                            sender.sendMessage(ChatColor.GREEN + getMessage("book_given").replace("%player%", args[0]));
+                            targetPlayer.sendMessage(ChatColor.GREEN + getMessage("book_received"));
                         } else {
-                            sender.sendMessage(ChatColor.RED + "[CommandGUI] Player " + args[0] + " not found!");
+                            sender.sendMessage(ChatColor.RED + getMessage("player_not_found").replace("%player%", args[0]));
                         }
                     } else {
-                        sender.sendMessage(ChatColor.RED + "[CommandGUI] Invalid usage! Usage: /cggive <player>");
+                        sender.sendMessage(ChatColor.RED + getMessage("invalid_usage"));
                     }
-                    return true;
                 } else {
-                    sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
-                    return true;
+                    sender.sendMessage(ChatColor.RED + getMessage("no_permission"));
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "[CommandGUI] Only players can use this command!");
-                return true;
+                sender.sendMessage(ChatColor.RED + getMessage("only_players"));
             }
+            return true;
         }
 
         return false;
+    }
+
+    private void loadLanguageFile() {
+        // Get the language file name from config
+        String langFileName = getConfig().getString("language-file", "en_us.yml");
+        File langFile = new File(getDataFolder(), langFileName);
+        if (!langFile.exists()) {
+            saveResource(langFileName, false);  // Save the default language file if it doesn't exist
+        }
+        langConfig = YamlConfiguration.loadConfiguration(langFile);
+    }
+
+    private String getMessage(String key) {
+        return ChatColor.translateAlternateColorCodes('&', langConfig.getString("messages." + key, key)); // Default to key if not found
     }
 
     private void loadGUIItems() {
@@ -127,11 +136,12 @@ public class CommandGui extends JavaPlugin implements Listener {
             String name = (String) itemConfig.get("name");
             String command = (String) itemConfig.get("command");
             String materialName = (String) itemConfig.get("material");
+            boolean runAsPlayer = itemConfig.containsKey("run-as-player") && (boolean) itemConfig.get("run-as-player");
 
             Material material = Material.matchMaterial(materialName);
             if (material != null) {
                 int slot = itemConfig.containsKey("slot") ? (int) itemConfig.get("slot") : currentSlot++;
-                guiItems.put(slot, new GUIItem(name, command, material));
+                guiItems.put(slot, new GUIItem(name, command, material, runAsPlayer));
             } else {
                 getLogger().warning("Invalid material '" + materialName + "' for item: " + name);
             }
@@ -141,7 +151,7 @@ public class CommandGui extends JavaPlugin implements Listener {
     public void openCommandGUI(Player player) {
         int inventorySize = ((guiItems.size() - 1) / 9 + 1) * 9;
 
-        Inventory gui = Bukkit.createInventory(null, inventorySize, ChatColor.BLUE + "Command GUI");
+        Inventory gui = Bukkit.createInventory(null, inventorySize, getMessage("gui_title"));
 
         for (Map.Entry<Integer, GUIItem> entry : guiItems.entrySet()) {
             int slot = entry.getKey();
@@ -164,8 +174,8 @@ public class CommandGui extends JavaPlugin implements Listener {
         ItemMeta meta = knowledgeBook.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName(ChatColor.AQUA + "Command GUI Book");
-            meta.setLore(List.of(ChatColor.GRAY + "Right-click to open the Command GUI."));
+            meta.setDisplayName(getMessage("book_name"));
+            meta.setLore(List.of(getMessage("book_description")));
             knowledgeBook.setItemMeta(meta);
         }
 
@@ -174,7 +184,7 @@ public class CommandGui extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getView().getTitle().equals(ChatColor.BLUE + "Command GUI")) {
+        if (event.getView().getTitle().equals(getMessage("gui_title"))) {
             event.setCancelled(true);
 
             Player player = (Player) event.getWhoClicked();
@@ -189,7 +199,13 @@ public class CommandGui extends JavaPlugin implements Listener {
 
             if (guiItem != null) {
                 player.closeInventory();
-                player.performCommand(guiItem.getCommand());
+
+                String commandToExecute = guiItem.getCommand().replace("%player%", player.getName());
+                if (guiItem.isRunAsPlayer()) {
+                    player.performCommand(commandToExecute);
+                } else {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandToExecute);
+                }
             }
         }
     }
@@ -201,7 +217,7 @@ public class CommandGui extends JavaPlugin implements Listener {
 
         if (item != null && item.getType() == Material.KNOWLEDGE_BOOK) {
             ItemMeta meta = item.getItemMeta();
-            if (meta != null && meta.getDisplayName().equals(ChatColor.AQUA + "Command GUI Book")) {
+            if (meta != null && meta.getDisplayName().equals(getMessage("book_name"))) {
                 event.setCancelled(true);
                 openCommandGUI(player);
             }
@@ -212,11 +228,13 @@ public class CommandGui extends JavaPlugin implements Listener {
         private final String name;
         private final String command;
         private final Material material;
+        private final boolean runAsPlayer;
 
-        public GUIItem(String name, String command, Material material) {
+        public GUIItem(String name, String command, Material material, boolean runAsPlayer) {
             this.name = name;
             this.command = command;
             this.material = material;
+            this.runAsPlayer = runAsPlayer;
         }
 
         public String getName() {
@@ -229,6 +247,10 @@ public class CommandGui extends JavaPlugin implements Listener {
 
         public Material getMaterial() {
             return material;
+        }
+
+        public boolean isRunAsPlayer() {
+            return runAsPlayer;
         }
     }
 }
