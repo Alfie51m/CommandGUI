@@ -19,7 +19,8 @@ import java.util.Map;
 public class CommandGuiGUI implements Listener {
 
     private static final Map<Integer, GUIItem> guiItems = new HashMap<>();
-    private static final int INVENTORY_SIZE = 54; // Fixed size (Double chest)
+    private static final Map<Player, Map<Integer, Long>> cooldowns = new HashMap<>(); // Added cooldown tracking
+    private static final int INVENTORY_SIZE_FIXED = 54; // Fixed size (Double chest)
 
     public static void loadGUIItems() {
         guiItems.clear();
@@ -39,15 +40,12 @@ public class CommandGuiGUI implements Listener {
                     : List.of();
 
             int cooldown = itemConfig.containsKey("cooldown") ? (int) itemConfig.get("cooldown") : 0;
+            Boolean verbose = itemConfig.containsKey("verbose") ? (Boolean) itemConfig.get("verbose") : null;
 
             if (material != null) {
                 int slot = itemConfig.containsKey("slot") ? (int) itemConfig.get("slot") : guiItems.size();
-                if (slot < INVENTORY_SIZE) { // Ensure it fits within the fixed size
-                    guiItems.put(slot, new GUIItem(name, command, material, runAsPlayer, lore, cooldown));
-                    CommandGui.getInstance().getLogger().info("Loaded GUI item: " + name + " at slot " + slot);
-                } else {
-                    CommandGui.getInstance().getLogger().warning("Item '" + name + "' exceeds inventory size and will not be displayed.");
-                }
+                guiItems.put(slot, new GUIItem(name, command, material, runAsPlayer, lore, cooldown, verbose));
+                CommandGui.getInstance().getLogger().info("Loaded GUI item: " + name + " at slot " + slot);
             } else {
                 CommandGui.getInstance().getLogger().warning("Invalid material '" + materialName + "' for item: " + name);
             }
@@ -55,7 +53,18 @@ public class CommandGuiGUI implements Listener {
     }
 
     public static void openCommandGUI(Player player) {
-        Inventory gui = Bukkit.createInventory(null, INVENTORY_SIZE, ChatColor.translateAlternateColorCodes('&', CommandGui.getInstance().getMessage("gui_title")));
+        String sizeMode = CommandGui.getInstance().getConfig().getString("gui-size-mode", "dynamic").toLowerCase();
+        int inventorySize;
+
+        if (sizeMode.equals("fixed")) {
+            inventorySize = INVENTORY_SIZE_FIXED;
+        } else {
+            // Dynamic size: calculate based on the number of items
+            int maxSlot = guiItems.keySet().stream().max(Integer::compareTo).orElse(0);
+            inventorySize = ((maxSlot / 9) + 1) * 9; // Round up to the nearest multiple of 9
+        }
+
+        Inventory gui = Bukkit.createInventory(null, inventorySize, ChatColor.translateAlternateColorCodes('&', CommandGui.getInstance().getMessage("gui_title")));
 
         // Populate GUI items
         for (Map.Entry<Integer, GUIItem> entry : guiItems.entrySet()) {
@@ -97,6 +106,32 @@ public class CommandGuiGUI implements Listener {
         int slot = event.getSlot();
         if (guiItems.containsKey(slot)) {
             GUIItem guiItem = guiItems.get(slot);
+
+            // Handle cooldown
+            long currentTime = System.currentTimeMillis();
+            cooldowns.putIfAbsent(player, new HashMap<>());
+            long lastUsed = cooldowns.get(player).getOrDefault(slot, 0L);
+            int cooldown = guiItem.getCooldown();
+
+            if (currentTime - lastUsed < cooldown * 1000L) {
+                long timeLeft = (cooldown * 1000L - (currentTime - lastUsed)) / 1000L;
+                player.sendMessage(ChatColor.RED + CommandGui.getInstance().getMessage("cooldown_active").replace("%time%", String.valueOf(timeLeft)));
+                return;
+            }
+
+            // Update cooldown
+            cooldowns.get(player).put(slot, currentTime);
+
+            // Handle verbose messaging
+            Boolean itemVerbose = guiItem.getVerbose();
+            boolean globalVerbose = CommandGui.getInstance().getConfig().getBoolean("verbose-mode", false);
+
+            if (Boolean.TRUE.equals(itemVerbose) || (itemVerbose == null && globalVerbose)) {
+                Bukkit.getLogger().info(CommandGui.getInstance().getMessage("verbose_message")
+                        .replace("%player%", player.getName())
+                        .replace("%name%", guiItem.getName()));
+            }
+
             String commandToExecute = guiItem.getCommand().replace("%player%", player.getName());
             if (guiItem.isRunAsPlayer()) {
                 player.performCommand(commandToExecute);
