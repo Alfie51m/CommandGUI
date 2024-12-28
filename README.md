@@ -27,6 +27,10 @@ CommandGUI is a Minecraft Bukkit plugin that provides players with a custom GUI 
 - **Description:** Gives the specified player the Command GUI Knowledge Book.
 - **Aliases:** `/cg give <player>`
 
+### `/commandgui help`
+- **Description:** Displays all the plugin's commands.
+- **Aliases:** `/cg help`
+
 ### `/commandgui reload`
 - **Description:** Reloads the plugin's configuration.
 - **Aliases:** `/cg reload`
