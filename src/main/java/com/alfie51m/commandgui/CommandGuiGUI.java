@@ -1,6 +1,7 @@
 package com.alfie51m.commandgui;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,12 +13,33 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class CommandGuiGUI implements Listener {
 
     private static final Map<Integer, GUIItem> guiItems = new HashMap<>();
+
+    public static void loadGUIItems() {
+        guiItems.clear();
+        List<Map<?, ?>> items = CommandGui.getInstance().getConfig().getMapList("gui-items");
+
+        for (Map<?, ?> itemConfig : items) {
+            String name = (String) itemConfig.get("name");
+            String command = (String) itemConfig.get("command");
+            String materialName = (String) itemConfig.get("item");
+            boolean runAsPlayer = itemConfig.containsKey("run-as-player") && (boolean) itemConfig.get("run-as-player");
+
+            Material material = Material.matchMaterial(materialName);
+            if (material != null) {
+                int slot = itemConfig.containsKey("slot") ? (int) itemConfig.get("slot") : guiItems.size();
+                guiItems.put(slot, new GUIItem(name, command, material, runAsPlayer));
+                CommandGui.getInstance().getLogger().info("Loaded GUI item: " + name + " at slot " + slot);
+            } else {
+                CommandGui.getInstance().getLogger().warning("Invalid material '" + materialName + "' for item: " + name);
+            }
+        }
+    }
 
     public static void openCommandGUI(Player player) {
         int inventorySize = ((guiItems.size() - 1) / 9 + 1) * 9;
@@ -31,7 +53,7 @@ public class CommandGuiGUI implements Listener {
             ItemStack itemStack = new ItemStack(guiItem.getMaterial());
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {
-                meta.setDisplayName(guiItem.getName());
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', guiItem.getName()));
                 itemStack.setItemMeta(meta);
             }
             gui.setItem(slot, itemStack);

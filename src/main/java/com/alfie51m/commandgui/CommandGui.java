@@ -23,6 +23,10 @@ public class CommandGui extends JavaPlugin {
         saveDefaultConfig();
         loadLanguageFile();
 
+        // Load GUI items
+        CommandGuiGUI.loadGUIItems();
+
+        // Register events and commands
         Bukkit.getPluginManager().registerEvents(new CommandGuiGUI(), this);
         getCommand("commandgui").setExecutor(new CommandGuiCommands());
         getCommand("cgreload").setExecutor(new CommandGuiCommands());

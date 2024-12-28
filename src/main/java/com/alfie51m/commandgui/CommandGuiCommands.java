@@ -29,6 +29,7 @@ public class CommandGuiCommands implements CommandExecutor {
             case "cgreload":
                 if (sender.hasPermission("commandgui.reload")) {
                     plugin.reloadConfig();
+                    CommandGuiGUI.loadGUIItems();
                     sender.sendMessage(ChatColor.GREEN + plugin.getMessage("reload_success"));
                 } else {
                     sender.sendMessage(ChatColor.RED + plugin.getMessage("no_permission"));
