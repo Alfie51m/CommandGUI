@@ -2,12 +2,12 @@ messages: # Please do NOT use color codes unless stated otherwise.
     no_permission: "You do not have permission to use this command."
     only_players: "[CommandGUI] Only players can use this command!"
     reload_success: "CommandGUI configuration reloaded!"
-    book_given: "You gave a CommandGUI Book to %player%!"
+    book_given: "You gave a CommandGUI Book to %player%!" # %player% will be replaced with the player's name.
     book_received: "You have been given a CommandGUI Book"
     player_not_found: "Player %player% not found!"
-    invalid_usage: "Invalid usage! Usage: /cggive <player>"
+    invalid_usage: "Invalid usage! Usage: /cggive <player>" # %player% will be replaced with the player's name.
     gui_title: "&aCommandGUI"
-    gui_item_name: "&b%name%"
-    gui_item_lore: "&7Click to execute the command!"
+    gui_item_name: "&b%name%" # DO NOT EDIT
+    gui_item_lore: "&7Click to execute the command!" # DO NOT EDIT
     book_name: "&aCommandGUI Book" # Can edit color
     book_description: "&7Right-click to open the Command GUI." # Can edit color

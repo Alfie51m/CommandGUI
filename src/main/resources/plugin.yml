@@ -1,5 +1,5 @@
 name: CommandGUI
-version: '2.1'
+version: '3.0-SNAPSHOT'
 main: com.alfie51m.commandgui.CommandGui
 api-version: '1.21'
 commands:
