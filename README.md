@@ -16,16 +16,20 @@ CommandGUI is a Minecraft Bukkit plugin that provides players with a custom GUI 
 
 ## **Commands**
 ### `/commandgui`
-Opens the Command GUI for the player.
+- **Description:** Opens the Command GUI for the player.
+- **Aliases:** `/cg`
 
-### `/cgbook`
-Gives the player a Knowledge Book that opens the Command GUI when used.
+### `/commandgui book`
+- **Description:** Gives the player a Knowledge Book that opens the Command GUI when used.
+- **Aliases:** `/cg book`
 
-### `/cggive [Player]`
-Gives specified player the Command GUI Knowledge Book.
+### `/commandgui give <player>`
+- **Description:** Gives the specified player the Command GUI Knowledge Book.
+- **Aliases:** `/cg give <player>`
 
-### `/cgreload`
-Reloads the plugin's configuration.
+### `/commandgui reload`
+- **Description:** Reloads the plugin's configuration.
+- **Aliases:** `/cg reload`
 
 ---
 
@@ -52,24 +56,38 @@ Reloads the plugin's configuration.
 The `config.yml` file allows you to customize the items in the GUI.
 
 ```yaml
+# General settings
 language-file: "en_us.yml"  # Default language file
+verbose-mode: false # Set to true to enable verbose messages
+gui-size-mode: "dynamic" # Options: "dynamic", "fixed"
 
 gui-items:
-  - slot: 0
-    name: "&aGo to Spawn"
-    command: "spawn"
-    item: "COMPASS"
-    run-as-player: true
-  - slot: 1
-    name: "&cHeal"
-    command: "heal"
-    item: "GOLDEN_APPLE"
-    run-as-player: true
-  - slot: 2
-    name: "&bDiamonds"
-    command: "give %player% diamond 1"
-    item: "DIAMOND"
-    run-as-player: false
+   - slot: 0
+     name: "&aGo to Spawn"
+     command: "spawn"
+     item: "COMPASS"
+     run-as-player: true
+     cooldown: 0 # No cooldown
+     lore:
+        - "&7Click to teleport to spawn"
+   - slot: 1
+     name: "&cHeal"
+     command: "heal"
+     item: "GOLDEN_APPLE"
+     run-as-player: true
+     cooldown: 30 # 30 seconds cooldown
+     lore:
+        - "&7Click to heal yourself"
+   - slot: 2
+     name: "&bDiamonds"
+     command: "give %player% diamond 1"
+     item: "DIAMOND"
+     run-as-player: false
+     cooldown: 60 # 60 seconds cooldown
+     lore:
+        - "&7Receive a diamond!"
+        - "&7This is a server reward."
+
 ```
 
 ### Configuration Options
@@ -83,11 +101,11 @@ gui-items:
 ## **Usage**
 1. **Opening the GUI**:
    - Use the `/commandgui` command to open the GUI.
-   - Alternatively, use the Knowledge Book provided with `/cgbook`.
+   - Alternatively, use the Knowledge Book provided with `/commandgui book`.
 
 2. **Adding Items**:
    - Edit the `config.yml` file to add or modify items in the GUI.
-   - Reload the configuration with `/cgreload`.
+   - Reload the configuration with `/commandgui reload`.
 
 ---
 
