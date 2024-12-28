@@ -7,8 +7,6 @@ messages: # Please do NOT use color codes unless stated otherwise.
     player_not_found: "Player %player% not found!"
     invalid_usage: "Invalid usage! Usage: /cggive <player>" # %player% will be replaced with the player's name.
     gui_title: "&aCommandGUI" # Can edit color
-    previous_page: "&aPrevious Page"
-    next_page: "&aNext Page"
     book_name: "&aCommandGUI Book" # Can edit color
     book_description: "&7Right-click to open the Command GUI." # Can edit color
     cooldown_active: "You must wait %time% seconds to use this again." # %time% will be replaced with the remaining cooldown time.
