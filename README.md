@@ -52,15 +52,24 @@ Reloads the plugin's configuration.
 The `config.yml` file allows you to customize the items in the GUI.
 
 ```yaml
+language-file: "en_us.yml"  # Default language file
+
 gui-items:
   - slot: 0
     name: "&aGo to Spawn"
     command: "spawn"
     material: "COMPASS"
+    run-as-player: true
   - slot: 1
     name: "&cHeal"
     command: "heal"
     material: "GOLDEN_APPLE"
+    run-as-player: true
+  - slot: 2
+    name: "&bDiamonds"
+    command: "give %player% diamond 1"
+    material: "DIAMOND"
+    run-as-player: false
 ```
 
 ### Configuration Options
