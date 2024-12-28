@@ -58,24 +58,24 @@ gui-items:
   - slot: 0
     name: "&aGo to Spawn"
     command: "spawn"
-    material: "COMPASS"
+    item: "COMPASS"
     run-as-player: true
   - slot: 1
     name: "&cHeal"
     command: "heal"
-    material: "GOLDEN_APPLE"
+    item: "GOLDEN_APPLE"
     run-as-player: true
   - slot: 2
     name: "&bDiamonds"
     command: "give %player% diamond 1"
-    material: "DIAMOND"
+    item: "DIAMOND"
     run-as-player: false
 ```
 
 ### Configuration Options
 - **`name`**: The display name of the item in the GUI.
 - **`command`**: The command executed when the item is clicked.
-- **`material`**: The item's material (e.g., `DIAMOND`, `BED`).
+- **`item`**: The item's material (e.g., `DIAMOND`, `BED`).
 - **`slot`**: The inventory slot for the item (optional, auto-increment if not provided).
 
 ---
