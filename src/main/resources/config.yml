@@ -1,3 +1,5 @@
+# General settings
+verbose-mode: false # Set to true to enable verbose messages
 language-file: "en_us.yml"  # Default language file
 
 gui-items:

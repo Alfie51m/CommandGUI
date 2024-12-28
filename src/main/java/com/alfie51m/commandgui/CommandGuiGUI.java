@@ -130,6 +130,16 @@ public class CommandGuiGUI implements Listener {
                 } else {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandToExecute);
                 }
+
+                // Verbose mode
+                if (CommandGui.getInstance().getConfig().getBoolean("verbose-mode")) {
+                    String verboseMessage = CommandGui.getInstance()
+                            .getMessage("verbose_message")
+                            .replace("%player%", player.getName())
+                            .replace("%name%", ChatColor.stripColor(guiItem.getName()));
+                    Bukkit.getLogger().info(verboseMessage);
+                    player.sendMessage(ChatColor.GRAY + verboseMessage);
+                }
             }
         }
     }
