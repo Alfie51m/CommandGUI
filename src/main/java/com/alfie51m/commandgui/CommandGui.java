@@ -30,7 +30,7 @@ public class CommandGui extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        loadLanguageFile();  // Load the language file based on config
+        loadLanguageFile();
         loadGUIItems();
         Bukkit.getPluginManager().registerEvents(this, this);
         getLogger().info("CommandGUI Plugin has been enabled.");
@@ -61,7 +61,7 @@ public class CommandGui extends JavaPlugin implements Listener {
             if (sender.hasPermission("commandgui.reload")) {
                 reloadConfig();
                 loadGUIItems();
-                loadLanguageFile();  // Reload the language file after config reload
+                loadLanguageFile();
                 sender.sendMessage(ChatColor.GREEN + getMessage("reload_success"));
             } else {
                 sender.sendMessage(ChatColor.RED + getMessage("no_permission"));
@@ -85,27 +85,22 @@ public class CommandGui extends JavaPlugin implements Listener {
         }
 
         if (label.equalsIgnoreCase("cggive")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                if (player.hasPermission("commandgui.cggive")) {
-                    if (args.length == 1) {
-                        Player targetPlayer = Bukkit.getPlayerExact(args[0]);
+            if (sender.hasPermission("commandgui.give")) {
+                if (args.length == 1) {
+                    Player targetPlayer = Bukkit.getPlayerExact(args[0]);
 
-                        if (targetPlayer != null) {
-                            giveCustomKnowledgeBook(targetPlayer);
-                            sender.sendMessage(ChatColor.GREEN + getMessage("book_given").replace("%player%", args[0]));
-                            targetPlayer.sendMessage(ChatColor.GREEN + getMessage("book_received"));
-                        } else {
-                            sender.sendMessage(ChatColor.RED + getMessage("player_not_found").replace("%player%", args[0]));
-                        }
+                    if (targetPlayer != null) {
+                        giveCustomKnowledgeBook(targetPlayer);
+                        sender.sendMessage(ChatColor.GREEN + getMessage("book_given").replace("%player%", args[0]));
+                        targetPlayer.sendMessage(ChatColor.GREEN + getMessage("book_received"));
                     } else {
-                        sender.sendMessage(ChatColor.RED + getMessage("invalid_usage"));
+                        sender.sendMessage(ChatColor.RED + getMessage("player_not_found").replace("%player%", args[0]));
                     }
                 } else {
-                    sender.sendMessage(ChatColor.RED + getMessage("no_permission"));
+                    sender.sendMessage(ChatColor.RED + getMessage("invalid_usage"));
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + getMessage("only_players"));
+                sender.sendMessage(ChatColor.RED + getMessage("no_permission"));
             }
             return true;
         }
@@ -114,17 +109,16 @@ public class CommandGui extends JavaPlugin implements Listener {
     }
 
     private void loadLanguageFile() {
-        // Get the language file name from config
         String langFileName = getConfig().getString("language-file", "en_us.yml");
         File langFile = new File(getDataFolder(), langFileName);
         if (!langFile.exists()) {
-            saveResource(langFileName, false);  // Save the default language file if it doesn't exist
+            saveResource(langFileName, false);
         }
         langConfig = YamlConfiguration.loadConfiguration(langFile);
     }
 
     private String getMessage(String key) {
-        return ChatColor.translateAlternateColorCodes('&', langConfig.getString("messages." + key, key)); // Default to key if not found
+        return ChatColor.translateAlternateColorCodes('&', langConfig.getString("messages." + key, key));
     }
 
     private void loadGUIItems() {
@@ -135,7 +129,7 @@ public class CommandGui extends JavaPlugin implements Listener {
         for (Map<?, ?> itemConfig : items) {
             String name = (String) itemConfig.get("name");
             String command = (String) itemConfig.get("command");
-            String materialName = (String) itemConfig.get("material");
+            String materialName = (String) itemConfig.get("item");
             boolean runAsPlayer = itemConfig.containsKey("run-as-player") && (boolean) itemConfig.get("run-as-player");
 
             Material material = Material.matchMaterial(materialName);

@@ -1,6 +1,6 @@
 messages: # Please do NOT use color codes unless stated otherwise.
     no_permission: "You do not have permission to use this command."
-    only_players: "Only players can use this command!"
+    only_players: "[CommandGUI] Only players can use this command!"
     reload_success: "CommandGUI configuration reloaded!"
     book_given: "You gave a CommandGUI Book to %player%!"
     book_received: "You have been given a CommandGUI Book"

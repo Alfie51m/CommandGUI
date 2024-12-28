@@ -22,6 +22,6 @@ permissions:
   commandgui.book:
     description: Allows access to the /cgbook command.
     default: op
-  commandgui.cggive:
+  commandgui.give:
     description: Allows access to the /cggive command and to give the Knowledge Book to other players.
     default: op
