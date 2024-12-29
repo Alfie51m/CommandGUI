@@ -1,0 +1,18 @@
+# カラーコードを使用しないでください。ただし、明示的に記載されている場合は除きます。
+# %player% はプレイヤー名に置き換えられます。%name% は使用されたアイテム名に置き換えられます。
+# %time% は残りのクールダウン時間に置き換えられます。
+
+messages:
+  no_permission: "このコマンドを使用する権限がありません。"
+  only_players: "[CommandGUI] このコマンドはプレイヤーのみが使用できます！"
+  reload_success: "CommandGUI の設定をリロードしました！"
+  book_given: "%player% に CommandGUI の本を渡しました！"
+  book_received: "CommandGUI の本を受け取りました。"
+  player_not_found: "プレイヤー %player% が見つかりません！"
+  invalid_usage: "無効な使用法です。使用方法：/cggive <プレイヤー>"
+  gui_title: "&aCommandGUI" # 色を編集可能
+  book_name: "&aCommandGUI の本" # 色を編集可能
+  book_description: "&7右クリックで Command GUI を開きます。" # 色を編集可能
+  cooldown_active: "%time% 秒待たないと再使用できません。"
+  verbose_message: "[CommandGUI] %player% が %name% を使用しました。"
+  invalid_subcommand: "無効なサブコマンドです。/commandgui [book|give <player>|reload] を使用してください。"

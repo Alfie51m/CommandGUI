@@ -27,18 +27,14 @@ public class CommandGui extends JavaPlugin {
         saveDefaultConfig();
         loadLanguageFile();
 
-        // Register event listeners
         Bukkit.getPluginManager().registerEvents(new CommandGuiGUI(), this);
 
-        // Register commands and tab completers
         CommandGuiCommands commandExecutor = new CommandGuiCommands();
         getCommand("commandgui").setExecutor(commandExecutor);
         getCommand("commandgui").setTabCompleter(commandExecutor);
 
-        // Load GUI items on startup
         CommandGuiGUI.loadGUIItems();
 
-        // Check for updates
         checkForUpdates();
 
         getLogger().info("CommandGUI Plugin has been enabled.");
@@ -50,19 +46,25 @@ public class CommandGui extends JavaPlugin {
     }
 
     private void loadLanguageFile() {
-        String langFileName = getConfig().getString("language-file", "en_us.yml");
-        File langFile = new File(getDataFolder(), langFileName);
+        String langFileName = getConfig().getString("language-file", "lang/en_us.yml");
+
+        File langDirectory = new File(getDataFolder(), "lang");
+        if (!langDirectory.exists()) {
+            langDirectory.mkdirs();
+        }
+
+        File langFile = new File(langDirectory, langFileName);
 
         if (!langFile.exists()) {
-            if (getResource(langFileName) != null) {
-                saveResource(langFileName, false);
+            if (getResource("lang/" + langFileName) != null) {
+                saveResource("lang/" + langFileName, false);
             } else {
-                getLogger().warning("Language file not found in resources: " + langFileName);
+                getLogger().warning("Language file not found in resources: lang/" + langFileName);
             }
         }
 
         langConfig = YamlConfiguration.loadConfiguration(langFile);
-        getLogger().info("Loaded language file: " + langFileName);
+        getLogger().info("Loaded language file: lang/" + langFileName);
     }
 
     public String getMessage(String key) {
@@ -108,13 +110,6 @@ public class CommandGui extends JavaPlugin {
         });
     }
 
-    /**
-     * Compares two version strings to determine if the second version is newer.
-     *
-     * @param currentVersion The current version of the plugin.
-     * @param latestVersion  The latest version retrieved from GitHub.
-     * @return true if the latest version is newer, false otherwise.
-     */
     private boolean isNewerVersion(String currentVersion, String latestVersion) {
         String[] currentParts = currentVersion.split("\\.");
         String[] latestParts = latestVersion.split("\\.");

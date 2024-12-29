@@ -1,0 +1,18 @@
+# Bitte KEINE Farb-Codes verwenden, es sei denn, dies wird ausdrücklich angegeben.
+# %player% wird durch den Spielernamen ersetzt. %name% wird durch das verwendete Objekt ersetzt.
+# %time% wird durch die verbleibende Abkühlzeit ersetzt.
+
+messages:
+  no_permission: "Du hast keine Berechtigung, diesen Befehl zu verwenden."
+  only_players: "[CommandGUI] Nur Spieler können diesen Befehl verwenden!"
+  reload_success: "CommandGUI-Konfiguration neu geladen!"
+  book_given: "Du hast ein CommandGUI-Buch an %player% gegeben!"
+  book_received: "Du hast ein CommandGUI-Buch erhalten."
+  player_not_found: "Spieler %player% nicht gefunden!"
+  invalid_usage: "Ungültige Nutzung. Verwende: /cggive <spieler>"
+  gui_title: "&aCommandGUI" # Farbe kann angepasst werden
+  book_name: "&aCommandGUI-Buch" # Farbe kann angepasst werden
+  book_description: "&7Rechtsklicken, um das Command GUI zu öffnen." # Farbe kann angepasst werden
+  cooldown_active: "Du musst %time% Sekunden warten, bevor du dies erneut verwenden kannst."
+  verbose_message: "[CommandGUI] %player% hat %name% benutzt."
+  invalid_subcommand: "Ungültiger Unterbefehl. Verwende /commandgui [book|give <player>|reload]."

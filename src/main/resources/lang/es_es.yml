@@ -1,0 +1,18 @@
+# Por favor, NO utilices códigos de color a menos que se indique lo contrario.
+# %player% será reemplazado por el nombre del jugador. %name% será reemplazado por el objeto utilizado.
+# %time% será reemplazado con el tiempo restante del enfriamiento.
+
+messages:
+  no_permission: "No tienes permiso para usar este comando."
+  only_players: "[CommandGUI] ¡Solo los jugadores pueden usar este comando!"
+  reload_success: "¡Configuración de CommandGUI recargada!"
+  book_given: "¡Le diste un libro de CommandGUI a %player%!"
+  book_received: "Se te ha dado un libro de CommandGUI"
+  player_not_found: "¡Jugador %player% no encontrado!"
+  invalid_usage: "Uso inválido. Usa: /cggive <jugador>"
+  gui_title: "&aCommandGUI" # Puedes editar el color
+  book_name: "&aLibro de CommandGUI" # Puedes editar el color
+  book_description: "&7Haz clic derecho para abrir el Command GUI." # Puedes editar el color
+  cooldown_active: "Debes esperar %time% segundos para usar esto nuevamente."
+  verbose_message: "[CommandGUI] %player% usó %name%"
+  invalid_subcommand: "Subcomando inválido. Usa /commandgui [book|give <player>|reload]."

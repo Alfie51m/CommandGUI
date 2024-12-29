@@ -1,0 +1,18 @@
+# 请不要使用颜色代码，除非特别说明。
+# %player% 将被替换为玩家的名字。%name% 将被替换为使用的物品名称。
+# %time% 将被替换为剩余冷却时间。
+
+messages:
+  no_permission: "你没有权限使用此命令。"
+  only_players: "[CommandGUI] 只有玩家可以使用此命令！"
+  reload_success: "CommandGUI 配置已重新加载！"
+  book_given: "你已给予 %player% 一个 CommandGUI 书！"
+  book_received: "你已获得一个 CommandGUI 书。"
+  player_not_found: "未找到玩家 %player%！"
+  invalid_usage: "无效用法。使用：/cggive <玩家>"
+  gui_title: "&aCommandGUI" # 可编辑颜色
+  book_name: "&aCommandGUI 书" # 可编辑颜色
+  book_description: "&7右键点击以打开 Command GUI。" # 可编辑颜色
+  cooldown_active: "你需要等待 %time% 秒才能再次使用此功能。"
+  verbose_message: "[CommandGUI] %player% 使用了 %name%"
+  invalid_subcommand: "无效子命令。使用 /commandgui [book|give <player>|reload]。"
