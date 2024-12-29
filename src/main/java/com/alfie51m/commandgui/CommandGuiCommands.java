@@ -41,6 +41,7 @@ public class CommandGuiCommands implements org.bukkit.command.CommandExecutor, T
                 case "reload" -> {
                     if (sender.hasPermission("commandgui.reload")) {
                         plugin.reloadConfig();
+                        plugin.loadLanguageFile(); // Reload the language file
                         CommandGuiGUI.loadGUIItems();
                         sender.sendMessage(ChatColor.GREEN + plugin.getMessage("reload_success"));
                     } else {

@@ -7,9 +7,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
 
 public class CommandGui extends JavaPlugin {
 
@@ -45,27 +47,45 @@ public class CommandGui extends JavaPlugin {
         getLogger().info("CommandGUI Plugin has been disabled.");
     }
 
-    private void loadLanguageFile() {
-        String langFileName = getConfig().getString("language-file", "lang/en_us.yml");
-
+    public void loadLanguageFile() {
         File langDirectory = new File(getDataFolder(), "lang");
         if (!langDirectory.exists()) {
             langDirectory.mkdirs();
         }
 
-        File langFile = new File(langDirectory, langFileName);
-
-        if (!langFile.exists()) {
-            if (getResource("lang/" + langFileName) != null) {
-                saveResource("lang/" + langFileName, false);
-            } else {
-                getLogger().warning("Language file not found in resources: lang/" + langFileName);
+        // Copy all language files from resources/lang/ to the lang/ directory
+        String[] languageFiles = {"en_us.yml", "es_es.yml", "de_de.yml", "fr_fr.yml", "it_it.yml", "ja_jp.yml", "pt_br.yml", "zh_cn.yml"};
+        for (String langFileName : languageFiles) {
+            File langFile = new File(langDirectory, langFileName);
+            if (!langFile.exists()) {
+                InputStream resourceStream = getResource("lang/" + langFileName);
+                if (resourceStream != null) {
+                    try {
+                        Files.copy(resourceStream, langFile.toPath());
+                        getLogger().info("Language file created: " + langFileName);
+                    } catch (Exception e) {
+                        getLogger().warning("Could not create language file: " + langFileName);
+                        e.printStackTrace();
+                    }
+                } else {
+                    getLogger().warning("Language file not found in resources/lang/: " + langFileName);
+                }
             }
         }
 
-        langConfig = YamlConfiguration.loadConfiguration(langFile);
-        getLogger().info("Loaded language file: lang/" + langFileName);
+        // Load the configured language file
+        String langFileName = getConfig().getString("language-file", "en_us.yml");
+        File selectedLangFile = new File(langDirectory, langFileName);
+
+        if (!selectedLangFile.exists()) {
+            getLogger().warning("Configured language file not found: " + langFileName + ". Falling back to en_us.yml.");
+            selectedLangFile = new File(langDirectory, "en_us.yml");
+        }
+
+        langConfig = YamlConfiguration.loadConfiguration(selectedLangFile);
+        getLogger().info("Loaded language file: " + selectedLangFile.getName());
     }
+
 
     public String getMessage(String key) {
         return langConfig.getString("messages." + key, key).replace('&', '§');

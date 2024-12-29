@@ -1,5 +1,5 @@
 # General settings
-language-file: "en_us.yml"  # Default language file
+language-file: "en_us.yml"  # Default language file. Changing languages will break existing CommandGUI books!
 verbose-mode: false # Set to true to enable verbose messages globally for all items (default fallback)
 gui-size-mode: "dynamic" # Options: "dynamic", "fixed"
 
