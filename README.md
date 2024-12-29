@@ -10,7 +10,7 @@ CommandGUI is a Minecraft Spigot plugin that provides players with a custom GUI 
 - **Configurable Items**: Define items, their appearance, and the commands they execute in the GUI via the configuration file.
 - **Dynamic Inventory Sizing**: Automatically adjusts the GUI size based on the number of items.
 - **Knowledge Book Integration**: Players can use a custom Knowledge Book to open the GUI.
-- **Command Reload**: Easily reload the plugin's configuration with `/cgreload`.
+- **Command Reload**: Easily reload the plugin's configuration with `/commandgui reload`.
 
 ---
 
