@@ -95,8 +95,8 @@ gui-items:
      cooldown: 60 # 60 seconds cooldown
       # No verbose field; falls back to global verbose-mode
      lore:
-        - "&7Receive a diamond!"
-        - "&7This is a server reward."
+        - "&bReceive a diamond!"
+        - "&3This is a server reward."
 ```
 
 ### Configuration Options

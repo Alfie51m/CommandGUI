@@ -1,14 +1,18 @@
-messages: # Please do NOT use color codes unless stated otherwise.
+# Please do NOT use color codes unless stated otherwise.
+# %player% will be replaced with the player's name. %name% will be replaced by the item used.
+# %time% will be replaced with the remaining cooldown time.
+
+messages:
     no_permission: "You do not have permission to use this command."
     only_players: "[CommandGUI] Only players can use this command!"
     reload_success: "CommandGUI configuration reloaded!"
-    book_given: "You gave a CommandGUI Book to %player%!" # %player% will be replaced with the player's name.
+    book_given: "You gave a CommandGUI Book to %player%!"
     book_received: "You have been given a CommandGUI Book"
     player_not_found: "Player %player% not found!"
-    invalid_usage: "Invalid usage! Usage: /cggive <player>" # %player% will be replaced with the player's name.
+    invalid_usage: "Invalid usage! Usage: /cggive <player>"
     gui_title: "&aCommandGUI" # Can edit color
     book_name: "&aCommandGUI Book" # Can edit color
     book_description: "&7Right-click to open the Command GUI." # Can edit color
-    cooldown_active: "You must wait %time% seconds to use this again." # %time% will be replaced with the remaining cooldown time.
+    cooldown_active: "You must wait %time% seconds to use this again."
     verbose_message: "[CommandGUI] %player% used %name%"
     invalid_subcommand: "Invalid subcommand. Use /commandgui [book|give <player>|reload]."
