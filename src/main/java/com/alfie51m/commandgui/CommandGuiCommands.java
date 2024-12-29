@@ -20,7 +20,6 @@ public class CommandGuiCommands implements org.bukkit.command.CommandExecutor, T
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (label.equalsIgnoreCase("commandgui") || label.equalsIgnoreCase("cg")) {
             if (args.length == 0) {
-                // Default behavior: open GUI
                 if (sender instanceof Player player) {
                     if (player.hasPermission("commandgui.use")) {
                         CommandGuiGUI.openCommandGUI(player);
@@ -92,6 +91,7 @@ public class CommandGuiCommands implements org.bukkit.command.CommandExecutor, T
         sender.sendMessage(ChatColor.YELLOW + "/commandgui give <player>" + ChatColor.WHITE + " - Gives the specified player a CommandGUI Book.");
         sender.sendMessage(ChatColor.YELLOW + "/commandgui reload" + ChatColor.WHITE + " - Reloads the plugin configuration.");
         sender.sendMessage(ChatColor.YELLOW + "/commandgui help" + ChatColor.WHITE + " - Displays this help message.");
+        sender.sendMessage(ChatColor.YELLOW + "/cg" + ChatColor.WHITE + " - /cg is an alias for /commandgui");
     }
 
     @Override
