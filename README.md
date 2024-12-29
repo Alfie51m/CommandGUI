@@ -53,7 +53,7 @@ CommandGUI is a Minecraft Spigot plugin that provides players with a custom GUI 
 2. Place the `.jar` file in your server's `plugins` directory.
 3. Start the server to generate the default configuration file.
 4. Configure the plugin by editing `plugins/CommandGUI/config.yml`.
-5. Reload the plugin with `/cgreload` or restart the server.
+5. Reload the plugin with `/commandgui reload` or restart the server.
 
 ---
 
@@ -62,41 +62,41 @@ The `config.yml` file allows you to customize the items in the GUI.
 
 ```yaml
 # General settings
-language-file: "en_us.yml"  # Default language file
+language-file: "en_us.yml"  # Default language file. Changing languages will break existing CommandGUI books!
 verbose-mode: false # Set to true to enable verbose messages globally for all items (default fallback)
 gui-size-mode: "dynamic" # Options: "dynamic", "fixed"
 
 gui-items:
-   - slot: 0
-     name: "&aGo to Spawn"
-     command: "spawn"
-     item: "COMPASS"
-     run-as-player: true
-     cooldown: 0 # No cooldown
-     verbose: true # Always log interaction for this item
-     lore:
-        - "&7Click to teleport to spawn"
+  - slot: 0
+    name: "&aGo to Spawn"
+    command: "spawn"
+    item: "COMPASS"
+    run-as-player: true
+    cooldown: 0 # No cooldown
+    verbose: true # Always log interaction for this item
+    lore:
+      - "&7Click to teleport to spawn"
 
-   - slot: 1
-     name: "&cHeal"
-     command: "heal"
-     item: "GOLDEN_APPLE"
-     run-as-player: true
-     cooldown: 30 # 30 seconds cooldown
-     verbose: false # Never log interaction for this item
-     lore:
-        - "&7Click to heal yourself"
+  - slot: 1
+    name: "&cHeal"
+    command: "heal"
+    item: "GOLDEN_APPLE"
+    run-as-player: true
+    cooldown: 30 # 30 seconds cooldown
+    verbose: false # Never log interaction for this item
+    lore:
+      - "&7Click to heal yourself"
 
-   - slot: 2
-     name: "&bDiamonds"
-     command: "give %player% diamond 1"
-     item: "DIAMOND"
-     run-as-player: false
-     cooldown: 60 # 60 seconds cooldown
-      # No verbose field; falls back to global verbose-mode
-     lore:
-        - "&bReceive a diamond!"
-        - "&3This is a server reward."
+  - slot: 2
+    name: "&bDiamonds"
+    command: "give %player% diamond 1"
+    item: "DIAMOND"
+    run-as-player: false
+    cooldown: 60 # 60 seconds cooldown
+    # No verbose field; falls back to global verbose-mode
+    lore:
+      - "&bReceive a diamond!"
+      - "&3This is a server reward."
 ```
 
 ### Configuration Options
