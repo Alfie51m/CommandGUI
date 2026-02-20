@@ -1,18 +1,18 @@
-# Per favore NON utilizzare codici colore a meno che non sia specificato.
-# %player% verrà sostituito con il nome del giocatore. %name% verrà sostituito con l'oggetto usato.
-# %time% verrà sostituito con il tempo di attesa rimanente.
+# Si prega di NON utilizzare codici colore a meno che non sia indicato.
+# %player% sarà sostituito dal nome del giocatore. %name% sarà sostituito dall’oggetto utilizzato.
+# %time% sarà sostituito dal tempo di cooldown rimanente.
 
 messages:
   no_permission: "Non hai il permesso di usare questo comando."
   only_players: "[CommandGUI] Solo i giocatori possono usare questo comando!"
   reload_success: "Configurazione di CommandGUI ricaricata!"
-  book_given: "Hai dato un Libro CommandGUI a %player%!"
-  book_received: "Hai ricevuto un Libro CommandGUI."
+  tool_given: "Hai dato uno Strumento CommandGUI a %player%!"
+  tool_received: "Ti è stato dato uno Strumento CommandGUI"
   player_not_found: "Giocatore %player% non trovato!"
-  invalid_usage: "Uso non valido. Usa: /cggive <giocatore>"
-  gui_title: "&aCommandGUI" # Puoi modificare il colore
-  book_name: "&aLibro CommandGUI" # Puoi modificare il colore
-  book_description: "&7Fai clic destro per aprire il Command GUI." # Puoi modificare il colore
-  cooldown_active: "Devi aspettare %time% secondi per usare di nuovo questo comando."
-  verbose_message: "[CommandGUI] %player% ha usato %name%."
-  invalid_subcommand: "Sottocomando non valido. Usa /commandgui [book|give <player>|reload]."
+  invalid_usage: "Uso non valido! Uso: /cg give <player>"
+  gui_title: "&aCommandGUI" # Il colore può essere modificato
+  tool_name: "&aStrumento CommandGUI" # Il colore può essere modificato
+  tool_description: "&7Clic destro per aprire il Command GUI." # Il colore può essere modificato
+  cooldown_active: "Devi aspettare %time% secondi prima di poterlo riutilizzare."
+  verbose_message: "[CommandGUI] %player% ha usato %name%"
+  invalid_subcommand: "Sottocomando non valido. Usa /commandgui [tool|give <player>|reload]."

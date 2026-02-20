@@ -130,30 +130,26 @@ public class CommandGuiGUI implements Listener {
         }
     }
 
-    public static void giveCustomKnowledgeBook(Player player) {
-        ItemStack knowledgeBook = new ItemStack(Material.KNOWLEDGE_BOOK);
-        ItemMeta meta = knowledgeBook.getItemMeta();
-
-        if (meta != null) {
-            meta.setDisplayName(CommandGui.getInstance().getMessage("book_name"));
-            meta.setLore(List.of(CommandGui.getInstance().getMessage("book_description")));
-            knowledgeBook.setItemMeta(meta);
-        }
-
-        player.getInventory().addItem(knowledgeBook);
-    }
-
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
 
-        if (item != null && item.getType() == Material.KNOWLEDGE_BOOK) {
-            ItemMeta meta = item.getItemMeta();
-            if (meta != null && meta.getDisplayName().equals(CommandGui.getInstance().getMessage("book_name"))) {
-                event.setCancelled(true);
-                openCommandGUI(player);
-            }
-        }
+        if (item == null) return;
+
+        Material guiToolMaterial = GUITool.parseMaterial(
+                CommandGui.getInstance().getConfig().getString("gui-tool")
+        );
+
+        if (item.getType() != guiToolMaterial) return;
+
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null || !meta.hasDisplayName()) return;
+
+        if (!meta.getDisplayName().equals(CommandGui.getInstance().getMessage("tool_name")))
+            return;
+
+        event.setCancelled(true);
+        openCommandGUI(player);
     }
 }

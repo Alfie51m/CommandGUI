@@ -48,11 +48,11 @@ public class CommandGuiCommands implements org.bukkit.command.CommandExecutor, T
                         sender.sendMessage(ChatColor.RED + plugin.getMessage("no_permission"));
                     }
                 }
-                case "book" -> {
+                case "tool" -> {
                     if (sender instanceof Player player) {
-                        if (player.hasPermission("commandgui.book")) {
-                            CommandGuiGUI.giveCustomKnowledgeBook(player);
-                            sender.sendMessage(ChatColor.GREEN + plugin.getMessage("book_received"));
+                        if (player.hasPermission("commandgui.tool")) {
+                            GUITool.giveCommandGUITool(player);
+                            sender.sendMessage(ChatColor.GREEN + plugin.getMessage("tool_received"));
                         } else {
                             sender.sendMessage(ChatColor.RED + plugin.getMessage("no_permission"));
                         }
@@ -65,9 +65,9 @@ public class CommandGuiCommands implements org.bukkit.command.CommandExecutor, T
                         if (args.length > 1) {
                             Player targetPlayer = Bukkit.getPlayerExact(args[1]);
                             if (targetPlayer != null) {
-                                CommandGuiGUI.giveCustomKnowledgeBook(targetPlayer);
-                                sender.sendMessage(ChatColor.GREEN + plugin.getMessage("book_given").replace("%player%", args[1]));
-                                targetPlayer.sendMessage(ChatColor.GREEN + plugin.getMessage("book_received"));
+                                GUITool.giveCommandGUITool(targetPlayer);
+                                sender.sendMessage(ChatColor.GREEN + plugin.getMessage("tool_given").replace("%player%", args[1]));
+                                targetPlayer.sendMessage(ChatColor.GREEN + plugin.getMessage("tool_received"));
                             } else {
                                 sender.sendMessage(ChatColor.RED + plugin.getMessage("player_not_found").replace("%player%", args[1]));
                             }
@@ -88,8 +88,8 @@ public class CommandGuiCommands implements org.bukkit.command.CommandExecutor, T
     private void sendHelpMessage(CommandSender sender) {
         sender.sendMessage(ChatColor.GOLD + "CommandGUI Help:");
         sender.sendMessage(ChatColor.YELLOW + "/commandgui" + ChatColor.WHITE + " - Opens the Command GUI.");
-        sender.sendMessage(ChatColor.YELLOW + "/commandgui book" + ChatColor.WHITE + " - Gives the player a CommandGUI Book.");
-        sender.sendMessage(ChatColor.YELLOW + "/commandgui give <player>" + ChatColor.WHITE + " - Gives the specified player a CommandGUI Book.");
+        sender.sendMessage(ChatColor.YELLOW + "/commandgui tool" + ChatColor.WHITE + " - Gives the player a CommandGUI Tool.");
+        sender.sendMessage(ChatColor.YELLOW + "/commandgui give <player>" + ChatColor.WHITE + " - Gives the specified player a CommandGUI Tool.");
         sender.sendMessage(ChatColor.YELLOW + "/commandgui reload" + ChatColor.WHITE + " - Reloads the plugin configuration.");
         sender.sendMessage(ChatColor.YELLOW + "/commandgui help" + ChatColor.WHITE + " - Displays this help message.");
         sender.sendMessage(ChatColor.YELLOW + "/cg" + ChatColor.WHITE + " - /cg is an alias for /commandgui");
@@ -99,8 +99,8 @@ public class CommandGuiCommands implements org.bukkit.command.CommandExecutor, T
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (alias.equalsIgnoreCase("commandgui") || alias.equalsIgnoreCase("cg")) {
             if (args.length == 1) {
-                return Arrays.asList("reload", "book", "give", "help").stream()
-                        .filter(sub -> sender.hasPermission("commandgui." + sub) || sub.equalsIgnoreCase("book") || sub.equalsIgnoreCase("help"))
+                return Arrays.asList("reload", "tool", "give", "help").stream()
+                        .filter(sub -> sender.hasPermission("commandgui." + sub) || sub.equalsIgnoreCase("tool") || sub.equalsIgnoreCase("help"))
                         .filter(sub -> sub.startsWith(args[0].toLowerCase()))
                         .collect(Collectors.toList());
             } else if (args.length == 2 && args[0].equalsIgnoreCase("give")) {

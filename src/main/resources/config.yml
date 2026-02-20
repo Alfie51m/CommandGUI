@@ -1,7 +1,8 @@
 # General settings
-language-file: "en_us.yml"  # Default language file. Changing languages will break existing CommandGUI books!
+language-file: "en_us.yml"  # Default language file. Changing languages will break existing CommandGUI tools!
 verbose-mode: false # Set to true to enable verbose messages globally for all items (default fallback)
 gui-size-mode: "dynamic" # Options: "dynamic", "fixed"
+gui-tool: "KNOWLEDGE_BOOK" # This is the item used to open the GUI given by "/cg tool". Changing this will break existing tools.
 
 gui-items:
   - slot: 0

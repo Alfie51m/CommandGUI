@@ -11,11 +11,11 @@ permissions:
   commandgui.use:
     description: Allows access to the /commandgui command and GUI.
     default: op
-  commandgui.book:
-    description: Allows access to /commandgui book to get a CommandGUI Book.
+  commandgui.tool:
+    description: Allows access to /commandgui tool to get a CommandGUI Tool.
     default: op
   commandgui.give:
-    description: Allows access to /commandgui give <player> to give the CommandGUI Book to another player.
+    description: Allows access to /commandgui give <player> to give the CommandGUI Tool to another player.
     default: op
   commandgui.reload:
     description: Allows access to /commandgui reload to reload the configuration.

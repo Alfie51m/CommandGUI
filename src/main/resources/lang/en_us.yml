@@ -6,13 +6,13 @@ messages:
     no_permission: "You do not have permission to use this command."
     only_players: "[CommandGUI] Only players can use this command!"
     reload_success: "CommandGUI configuration reloaded!"
-    book_given: "You gave a CommandGUI Book to %player%!"
-    book_received: "You have been given a CommandGUI Book"
+    tool_given: "You gave a CommandGUI Tool to %player%!"
+    tool_received: "You have been given a CommandGUI Tool"
     player_not_found: "Player %player% not found!"
-    invalid_usage: "Invalid usage! Usage: /cggive <player>"
+    invalid_usage: "Invalid usage! Usage: /cg give <player>"
     gui_title: "&aCommandGUI" # Can edit color
-    book_name: "&aCommandGUI Book" # Can edit color
-    book_description: "&7Right-click to open the Command GUI." # Can edit color
+    tool_name: "&aCommandGUI Tool" # Can edit color
+    tool_description: "&7Right-click to open the Command GUI." # Can edit color
     cooldown_active: "You must wait %time% seconds to use this again."
     verbose_message: "[CommandGUI] %player% used %name%"
-    invalid_subcommand: "Invalid subcommand. Use /commandgui [book|give <player>|reload]."
+    invalid_subcommand: "Invalid subcommand. Use /commandgui [tool|give <player>|reload]."

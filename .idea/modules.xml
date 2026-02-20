@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CommandGUI.iml" filepath="$PROJECT_DIR$/CommandGUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/CommandGUI.iml" filepath="$PROJECT_DIR$/.idea/CommandGUI.iml" />
     </modules>
   </component>
 </project>
